@@ -14,18 +14,23 @@ const App = () => {
 
   const taskCount = todoList.length;
 
+  // function to clear input after task added
   const clearTodoList = () => {
     setTodoList([]);
   };
 
   const addTask = () => {
-    const makeListFrom = [...todoList, newTask];
+    const task = {
+      id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
+      taskName: newTask,
+    };
+    const makeListFrom = [...todoList, task];
     newTask.length === 0 ? alert("Can't be empty") : setTodoList(makeListFrom);
-    setNewTask("");
+    setNewTask(""); // clear input after task added
+  };
 
-    // todo - delete
-    // const deleteTask = () {
-    // }
+  const deleteTask = (id) => {
+    setTodoList(todoList.filter((task) => task.id !== id));
   };
 
   return (
@@ -44,11 +49,11 @@ const App = () => {
           </div>
           <ul className="space-y-3">
             <hr className="border-[1px]" />
-            {todoList.map((item) => {
+            {todoList.map((task) => {
               return (
                 <div className="flex justify-between h-[40px] w-full items-center overflow-hidden rounded-sm">
-                  <li className="item-task px-2 py-[10px] h-full capitalize">{item}</li>
-                  <button className="bg-red-500 px-4 h-full  text-white text-sm">
+                  <li className="item-task px-2 py-[10px] h-full capitalize">{task.taskName}</li>
+                  <button className="bg-red-500 px-4 h-full  text-white text-sm" onClick={() => deleteTask(task.id)}>
                     <FaTrash />
                   </button>
                 </div>
