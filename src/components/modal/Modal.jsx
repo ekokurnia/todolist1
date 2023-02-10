@@ -11,7 +11,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
         <div className="overlay">
           <div className="modal-content">
             <button className="modal-btn" onClick={closeModal}>
-              <MdClose size={25} />
+              <MdClose size={20} />
             </button>
             <h2 className="font-bold text-xl mb-2">Alert</h2>
             <hr className="border-[1px] border-b-gray-400 mb-2" />

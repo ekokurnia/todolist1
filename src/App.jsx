@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "./components/modal/Modal";
+// React Icons
 import { FaTrash } from "react-icons/fa";
 import { HiPlusSm } from "react-icons/hi";
 
@@ -27,7 +28,7 @@ const App = () => {
       taskName: newTask,
     };
     const makeListFrom = [...todoList, task];
-    newTask.length !== 0 ? setTodoList(makeListFrom) : setModal(true);
+    newTask.length !== 0 ? setTodoList(makeListFrom) : setModal(true); //display modal when input is 0
     setNewTask(""); // clear input after task added
   };
 
