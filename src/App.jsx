@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import Modal from "./components/modal/Modal";
 import { FaTrash } from "react-icons/fa";
 import { HiPlusSm } from "react-icons/hi";
 
 const App = () => {
   const [todoList, setTodoList] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const [modal, setModal] = useState(false);
 
   const handleChange = (event) => {
     event.target.value.length <= 25 ? setNewTask(event.target.value) : alert("Maksimal 25 karakter");
@@ -25,8 +27,14 @@ const App = () => {
       taskName: newTask,
     };
     const makeListFrom = [...todoList, task];
-    newTask.length === 0 ? alert("Can't be empty") : setTodoList(makeListFrom);
+    newTask.length !== 0 ? setTodoList(makeListFrom) : setModal(true);
     setNewTask(""); // clear input after task added
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      addTask();
+    }
   };
 
   const deleteTask = (id) => {
@@ -35,12 +43,16 @@ const App = () => {
 
   return (
     <div className=" bg-main w-screen h-screen font-inter">
+      <Modal isOpen={modal} closeModal={() => setModal(false)}>
+        Can't add an empty task !
+      </Modal>
       <div className="flex justify-center items-center h-full">
-        <div className="flex flex-col justify-between p-4 bg-white min-h-[250px] min-w-[300px] rounded-md shadow-2xl">
+        {/* Content Container */}
+        <div className="flex flex-col justify-between p-4 bg-white min-h-[200px] min-w-[300px] rounded-md shadow-2xl">
           <div className="">
             <h1 className="font-bold text-xl mb-4">Todo App</h1>
             <div className="flex justify-between">
-              <input type="text" placeholder="Add task" className="p-2 border-2 border-gray-400 rounded-sm text-sm w-full" value={newTask} onChange={handleChange} />
+              <input type="text" placeholder="Add task" className="p-2 border-2 border-gray-400 rounded-sm text-sm w-full" value={newTask} onChange={handleChange} onKeyPress={handleKeyPress} />
               <button className="bg-blue-500 text-white p-2 px-4 ml-2 rounded-sm" onClick={addTask}>
                 <HiPlusSm />
               </button>
@@ -60,16 +72,18 @@ const App = () => {
               );
             })}
             {isTodoListEmpty && <li className="item-task px-2 py-[10px] h-full ">There is no task todo!</li>}
-            <hr className="border-[1px]" />
+            {!isTodoListEmpty && <hr className="border-[1px]" />}
           </ul>
-          <div className="text-main flex justify-between items-center text-xs mt-2">
-            <p className="">
-              You have <span>{taskCount}</span> task(s) todo
-            </p>
-            <button className="bg-blue-500 text-white p-2 px-4 ml-2 rounded-sm" onClick={clearTodoList}>
-              Clear All
-            </button>
-          </div>
+          {!isTodoListEmpty && (
+            <div className="text-main flex justify-between items-center text-xs mt-2">
+              <p className="">
+                You have <span>{taskCount}</span> task(s) todo
+              </p>
+              <button className="bg-blue-500 text-white p-2 px-4 ml-2 rounded-sm" onClick={clearTodoList}>
+                Clear All
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
